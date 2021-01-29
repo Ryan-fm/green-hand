@@ -1,12 +1,62 @@
 //双向链表
 function doubleLinkedList(){
+  // 构造一个节点
   var Node = function(element){
-    this.element = element
-    this.next = null;
+    this.element = element; // 
+    this.next = null; //指向下一个元素
+    this.previous = null;//指向上一个元素
   }
   var length = 0
   // 头部
   var head = null;
+  //保存尾部最后一个元素
+  var tail = null;
+  // 插入指定的元素
+  this.insert  = function (position,element){
+    //  先判断有没有越界
+    if(position >=0 && position <= length){
+      
+        // 初始化元素
+        var node = new Node(element),
+        current = head, //当前的元素
+        index = 0; //记录遍历的位置
+        // 如果是头部插入
+        if(position == 0){
+          // 如果是新增
+          if(!head){
+            head = node
+            tail = node
+          }else{
+            // 有链表 不需要维护tail
+            node.next = current
+            current.previous = node
+            head = node
+          }
+        }else if(position == length){
+          // 如果是最后的元素 维护tail
+          current = tail
+          current.next = node
+          node.previous = current
+          tail = node
+        }else{
+          // 找到对应的元素
+          while(index ++ < position){
+            previous = current
+            current = current.next
+          }
+          // 建立连接
+          node.next = current
+          previous.next = node
+          current.previous = node
+          node.previous = previous
+         
+        }
+        length ++
+        return true
+    }else{
+      return false
+    }
+  }
   // 移除指定位置的元素
   this.removeAt = function(position){
     // 先检查越界
@@ -84,10 +134,11 @@ function doubleLinkedList(){
     return length; 
    };
 }
-var link = new LinkedList()
+var link = new doubleLinkedList()
 link.append(1)
 link.append(4)
 link.append(7)
+link.insert(2,333)
 console.log(link.indexof(1))
 console.log(link.toString());
 link.removeAt(1)
