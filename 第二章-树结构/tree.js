@@ -146,4 +146,49 @@ function BinarySearychTree(){
       return true
     }
   }
+  // 删除特定的值
+  this.remove = function(key){
+    root = removeNode(root,key)
+  }
+  /**
+   * node 节点
+   * key 删除的元素
+   */
+  var removeNode = function(node,key){
+    // 判断节点是否为空
+    if(node == null){
+      return node
+    }
+    // 如果是在左子树
+    if(key < node.key){
+      // 递归
+      node.left = removeNode(node.left,key)
+      return node
+    }else if(key > node.key){
+      node.right = removeNode(node.right,key)
+      return node
+    }else{
+      // key == node.key
+      // 没有子节点
+      if(node.left == null || node.right == null){
+        node = null;
+        return node
+      }
+      // 有一个子节点
+      if(node.left === null){
+        node = node.right
+        return node
+      }else if(node.right == null){
+        node = node.left;
+        return node
+      }
+      // 两个子节点 最麻烦的情况 
+      // 在右子树找到最小的元素
+      var aux = minNode(node.right)
+      // 将最小的值替换掉node， 
+      node.key = aux.key
+      node.right = removeNode(node.right,aux.key)
+      return node
+    }
+  }
 }
